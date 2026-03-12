@@ -4,7 +4,9 @@ const replicate = new Replicate({
   auth: process.env.REPLICATE_API_TOKEN!,
 })
 
-const MODEL = 'uglyrobot/sora2-watermark-remover'
+// Full version hash required — predictions.create with `model` string
+// causes 404 unless the model has an active official deployment.
+const MODEL_VERSION = '7b636d39f482f129dfa3429fdc7c5c2d4f4ef36e4cbc6d919b701c1d39162797'
 
 export interface ReplicateResult {
   predictionId: string
@@ -18,7 +20,7 @@ export async function startProcessing(
   webhookUrl?: string
 ): Promise<ReplicateResult> {
   const options: Parameters<typeof replicate.predictions.create>[0] = {
-    model: MODEL,
+    version: MODEL_VERSION,
     input: { video: videoUrl },
   }
 
